@@ -22,6 +22,7 @@ private:
 	//_wait=NN_DONTWAIT
 	bool SendMsg(st_pack &_pack, int _wait = 0, double _timesync = 0);
 	bool RecvMsg(st_pack &_pack, int _wait = 0);
+	virtual int NNGErr(int _err);
 private:
 	bool m_debug = false;
 	bool m_Terminated = false;

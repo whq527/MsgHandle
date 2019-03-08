@@ -115,12 +115,13 @@ void CMsgRecv::RecvRun()
 				strftime(recv_time, sizeof(recv_time), "%Y-%m-%d %H:%M:%S", &ttm);
 				one_pack.str_recv_time = recv_time;
 
-				if (m_debug || one_pack.key == "timecheck")
+				if (m_debug || one_pack.table_key == "timecheck")
 				{
 					LOG(INFO) << one_pack.source << " "
 						<< one_pack.source_guid << " "
 						<< one_pack.source_ip << " "
 						<< one_pack.index << " "
+						<< one_pack.table_key << " "
 						<< one_pack.key << " ["
 						<< one_pack.value << "] "
 						<< create_time << " "
@@ -135,13 +136,13 @@ void CMsgRecv::RecvRun()
 				rep.source_ip = one_pack.source_ip;
 				rep.index = one_pack.index;
 				rep.key = FEEDBACK;
-				if (one_pack.key == "timecheck")
+				if (one_pack.table_key == "timecheck")
 				{
-					rep.value = "timecheck";
+					rep.table_key = "timecheck";
 				}
 				else
 				{
-					rep.value = "check";
+					rep.table_key = "check";
 				}
 				SendMsg(rep, NN_DONTWAIT);
 			}
@@ -200,6 +201,7 @@ void CMsgRecv::WtDbRun()
 					<< "'" << var.source << "',"
 					<< "'" << var.source_guid << "',"
 					<< "'" << var.source_ip << "',"
+					<< "'" << var.table_key << "',"
 					<< "'" << var.key << "',"
 					<< "'" << var.value << "',"
 					<< "'" << var.str_create_time.c_str() << "',"
@@ -207,12 +209,12 @@ void CMsgRecv::WtDbRun()
 					<< "'" << var.str_recv_time.c_str() << "')";
 				string value = ANSIToUTF8(ss_sql.str());
 
-				auto iter = m_key_db.find(var.key);
+				auto iter = m_key_db.find(var.table_key);
 				if (iter == m_key_db.end())
 				{
 					m_dbhdl->BatchInsert("data_general", value.c_str(),
 						"(SOURCE_NAME,SOURCE_GUID,SOURCE_IP,"
-						"MSG_KEY,MSG_VALUE,"
+						"TABLE_KEY,MSG_KEY,MSG_VALUE,"
 						"TIME_CREATE,TIME_SEND,TIME_RECV)");
 					if (m_debug)
 					{
@@ -225,7 +227,7 @@ void CMsgRecv::WtDbRun()
 					{
 						m_dbhdl->BatchInsert(iter->second.c_str(), value.c_str(),
 							"(SOURCE_NAME,SOURCE_GUID,SOURCE_IP,"
-							"MSG_KEY,MSG_VALUE,"
+							"TABLE_KEY,MSG_KEY,MSG_VALUE,"
 							"TIME_CREATE,TIME_SEND,TIME_RECV)");
 						if (m_debug)
 						{
@@ -253,6 +255,7 @@ void CMsgRecv::Terminate(void)
 void CMsgRecv::AddKeyToDb(const char* _key, const char* _table)
 {
 	m_key_db[_key] = _table;
+	g_log->info("关联%v至%v表", _key, _table);
 }
 
 void CMsgRecv::RecvState(int &_count)
@@ -291,14 +294,9 @@ bool CMsgRecv::SendMsg(st_pack & _pack, int _wait, double _timesync)
 	}
 
 	int bytes = nn_send(m_sock, (char*)one_msg.data(), one_msg.length(), _wait);
-	if (bytes < 0)
-	{
-		printf("nn_send failed: %s\n", nn_strerror(errno));
-	}
-	else
-	{
-		//printf("nn_send size %d\n", bytes);
-	}
+	if (NNGErr(bytes) < 0)
+		return false;
+
 	return true;
 }
 
@@ -307,7 +305,7 @@ bool CMsgRecv::RecvMsg(st_pack & _pack, int _wait)
 {
 	char *buf = NULL;
 	int bytes = nn_recv(m_sock, &buf, NN_MSG, _wait);
-	if (bytes <= 0)
+	if (NNGErr(bytes) < 0)
 		return false;
 
 	//解析解压
@@ -345,4 +343,13 @@ bool CMsgRecv::RecvMsg(st_pack & _pack, int _wait)
 
 	nn_freemsg(buf);
 	return true;
+}
+
+int CMsgRecv::NNGErr(int _err)
+{
+	if (_err < 0)
+	{
+		printf("NNG:%d %s\n", errno, nn_strerror(errno));
+	}
+	return _err;
 }

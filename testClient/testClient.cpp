@@ -13,6 +13,9 @@ int main()
 	char clientname[512];
 	cin >> clientname;
 	//strcpy_s(clientname, "aaa");
+	printf("enter table: \n");
+	char table[32] = "";
+	cin >> table;
 	printf("enter key: \n");
 	char key[32] = "";
 	cin >> key;
@@ -20,7 +23,7 @@ int main()
 	ClibMsg *cl = CreateLibMsgTcp();
 	string svrip = "127.0.0.1";
 	//string svrip = "10.200.66.110";
-	if (cl->Init(clientname, svrip.c_str(), 30000))
+	if (cl->Init(clientname, svrip.c_str(), 30000, 5000))
 	{
 		cl->Start();
 	}
@@ -67,14 +70,14 @@ int main()
 					sprintf_s(msg, "%d", rand());
 					//cout << "send->" << msg << endl;
 					if (cl != nullptr)
-						cl->GetMsg(key, msg);
+						cl->GetMsg(table, key, msg);
 				}
 				cout << num << " msgs time use " << (GetTickCount() - tk1) << endl;
 				cout << "last send->" << msg << endl;
 			}
 			else
 			{
-				cl->GetMsg(key, msg);
+				cl->GetMsg(table, key, msg);
 			}
 		}
 

@@ -13,17 +13,6 @@ INITIALIZE_EASYLOGGINGPP
 using namespace std;
 el::Logger* g_log;
 
-//void CTcpSvr::GetCompareList(st_Compare _Comp)
-//{
-//	st_Compare one;
-//	if (_Comp.Header == "") return;
-//	one.Header = _Comp.Header;
-//	one.Delay = _Comp.Delay;
-//	one.type = _Comp.type;
-//	one.Base = _Comp.Base;
-//	m_COMPlist.push_back(one);
-//}
-
 void GetExePath(char* _path, int _len)
 {
 	char szFilePath[MAX_PATH + 1] = { 0 };
@@ -152,7 +141,7 @@ int main()
 	sprintf_s(filename, "%s\\%s", g_FilePath, "msgdb.db");
 	CSqlite_MemDb m_dbhdl;
 	CMsgRecv recvsvr;
-
+	//创建表结构
 	CreateMemDb(filename, &m_dbhdl, &recvsvr);
 	m_dbhdl.start();
 
