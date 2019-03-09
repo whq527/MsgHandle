@@ -27,32 +27,23 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CompareData.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="common.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="dbCreate.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ConvertUTF.h">
+    <ClInclude Include="..\..\mylib\include\Memory_cb.h">
       <Filter>通用文件</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleIni.h">
+    <ClInclude Include="..\..\mylib\include\CEncodeMsg.h">
       <Filter>通用文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\easylogging++.h">
-      <Filter>通用文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Memory_cb.h">
-      <Filter>通用文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CEncodeMsg.h">
+    <ClInclude Include="..\..\mylib\include\easylogging++.h">
       <Filter>通用文件</Filter>
     </ClInclude>
     <ClInclude Include="CMsgRecv.h">
-      <Filter>通用文件</Filter>
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -62,26 +53,17 @@
     <ClCompile Include="MsgHandleSvr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CompareData.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\include\easylogging++.cc">
+    <ClCompile Include="..\..\mylib\include\Memory_cb.cpp">
       <Filter>通用文件</Filter>
     </ClCompile>
-    <ClCompile Include="ConvertUTF.c">
+    <ClCompile Include="..\..\mylib\include\CEncodeMsg.cpp">
       <Filter>通用文件</Filter>
     </ClCompile>
-    <ClCompile Include="Memory_cb.cpp">
-      <Filter>通用文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CEncodeMsg.cpp">
+    <ClCompile Include="..\..\mylib\include\easylogging++.cc">
       <Filter>通用文件</Filter>
     </ClCompile>
     <ClCompile Include="CMsgRecv.cpp">
-      <Filter>通用文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleIni.cpp">
-      <Filter>通用文件</Filter>
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

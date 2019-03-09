@@ -30,7 +30,7 @@
     <ClInclude Include="libMsgTcpIter.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CEncodeMsg.h">
+    <ClInclude Include="..\..\mylib\include\CEncodeMsg.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,7 +44,7 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CEncodeMsg.cpp">
+    <ClCompile Include="..\..\mylib\include\CEncodeMsg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

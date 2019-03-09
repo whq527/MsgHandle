@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\vcpkg.E.vcpkg.1.0.0\build\native\vcpkg.E.vcpkg.props" Condition="Exists('..\packages\vcpkg.E.vcpkg.1.0.0\build\native\vcpkg.E.vcpkg.props')" />
+  <Import Project="..\packages\vcpkg.E.Lib.vcpkg.1.0.0\build\native\vcpkg.E.Lib.vcpkg.props" Condition="Exists('..\packages\vcpkg.E.Lib.vcpkg.1.0.0\build\native\vcpkg.E.Lib.vcpkg.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -35,7 +35,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
@@ -43,14 +43,14 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -75,12 +75,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)64</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -88,16 +92,16 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>ZLIB_WINAPI;WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBMSGTCP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ZLIB_WINAPI;ASMV;ASMINF;WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBMSGTCP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\include;..\..\include\msgpack</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(M_USER_LIB)include;$(M_USER_LIB)zlib;$(M_USER_LIB)msgpack</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>msgpackcd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(M_USER_LIB)lib;$(M_USER_LIB)lib\dll</AdditionalLibraryDirectories>
+      <AdditionalDependencies>nanomsg.lib;ws2_32.lib;Mswsock.lib;msgpackcd.lib;zlibstatd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>rem copy libMsgTcp.h ..\testClient\libMsgTcp.h</Command>
@@ -109,12 +113,15 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;LIBMSGTCP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ZLIB_WINAPI;ASMV;ASMINF;_DEBUG;_WINDOWS;_USRDLL;LIBMSGTCP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(M_USER_LIB)include;$(M_USER_LIB)zlib;$(M_USER_LIB)msgpack</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(M_USER_LIB)lib;$(M_USER_LIB)lib\dll</AdditionalLibraryDirectories>
+      <AdditionalDependencies>nanomsg.lib;ws2_32.lib;Mswsock.lib;msgpackc64d.lib;zlibstat64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -128,15 +135,15 @@
       <PreprocessorDefinitions>ZLIB_WINAPI;ASMV;ASMINF;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBMSGTCP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\include;..\..\include\msgpack</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(M_USER_LIB)include;$(M_USER_LIB)zlib;$(M_USER_LIB)msgpack</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>msgpackc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>nanomsg.lib;ws2_32.lib;Mswsock.lib;msgpackc.lib;zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(M_USER_LIB)lib;$(M_USER_LIB)lib\dll</AdditionalLibraryDirectories>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
@@ -152,28 +159,32 @@ copy libMsgTcp.h $(SolutionDir)$(Configuration)\libMsgTcp.h</Command>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;LIBMSGTCP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ZLIB_WINAPI;ASMV;ASMINF;NDEBUG;_WINDOWS;_USRDLL;LIBMSGTCP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(M_USER_LIB)include;$(M_USER_LIB)zlib;$(M_USER_LIB)msgpack</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(M_USER_LIB)lib;$(M_USER_LIB)lib\dll</AdditionalLibraryDirectories>
+      <AdditionalDependencies>nanomsg.lib;ws2_32.lib;Mswsock.lib;msgpackc64.lib;zlibstat64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CEncodeMsg.h" />
+    <ClInclude Include="..\..\mylib\include\CEncodeMsg.h" />
     <ClInclude Include="libMsgTcp.h" />
     <ClInclude Include="libMsgTcpIter.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CEncodeMsg.cpp" />
+    <ClCompile Include="..\..\mylib\include\CEncodeMsg.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -196,13 +207,13 @@ copy libMsgTcp.h $(SolutionDir)$(Configuration)\libMsgTcp.h</Command>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\vcpkg.E.vcpkg.1.0.0\build\native\vcpkg.E.vcpkg.targets" Condition="Exists('..\packages\vcpkg.E.vcpkg.1.0.0\build\native\vcpkg.E.vcpkg.targets')" />
+    <Import Project="..\packages\vcpkg.E.Lib.vcpkg.1.0.0\build\native\vcpkg.E.Lib.vcpkg.targets" Condition="Exists('..\packages\vcpkg.E.Lib.vcpkg.1.0.0\build\native\vcpkg.E.Lib.vcpkg.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\vcpkg.E.vcpkg.1.0.0\build\native\vcpkg.E.vcpkg.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\vcpkg.E.vcpkg.1.0.0\build\native\vcpkg.E.vcpkg.props'))" />
-    <Error Condition="!Exists('..\packages\vcpkg.E.vcpkg.1.0.0\build\native\vcpkg.E.vcpkg.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\vcpkg.E.vcpkg.1.0.0\build\native\vcpkg.E.vcpkg.targets'))" />
+    <Error Condition="!Exists('..\packages\vcpkg.E.Lib.vcpkg.1.0.0\build\native\vcpkg.E.Lib.vcpkg.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\vcpkg.E.Lib.vcpkg.1.0.0\build\native\vcpkg.E.Lib.vcpkg.props'))" />
+    <Error Condition="!Exists('..\packages\vcpkg.E.Lib.vcpkg.1.0.0\build\native\vcpkg.E.Lib.vcpkg.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\vcpkg.E.Lib.vcpkg.1.0.0\build\native\vcpkg.E.Lib.vcpkg.targets'))" />
   </Target>
 </Project>
